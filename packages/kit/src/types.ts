@@ -87,9 +87,9 @@ export type RelayMsg =
 // ── Game state ────────────────────────────────────────────────────────────────
 
 export interface GameState {
-  game: 'lobby' | 'seance' | 'hex_duel'
+  game: 'lobby' | 'seance' | 'hex_duel' | 'pumpkin_launch' | 'broom_derby' | 'cauldron_chaos' | 'phantom_freq'
   players: Player[]
-  data: LobbyData | SeanceData | HexDuelData
+  data: LobbyData | SeanceData | HexDuelData | Record<string, unknown>
 }
 
 export interface LobbyData {

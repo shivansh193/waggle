@@ -31,6 +31,16 @@
         <div id="lobby-sub">Scan the QR with your phone</div>
       </div>
 
+      <!-- Game picker overlay -->
+      <div id="game-picker" style="display:none">
+        <h2 id="game-picker-title">Choose a Game</h2>
+        <div id="game-cards-grid"></div>
+        <button id="picker-back-btn">← Back to Lobby</button>
+      </div>
+
+      <!-- Return button (shown while a game is active) -->
+      <button id="return-btn" style="display:none">↩ Lobby</button>
+
       <!-- Debug overlay -->
       <div id="debug-overlay">
         <div>Relay: <span id="dbg-relay" class="warn">connecting…</span></div>

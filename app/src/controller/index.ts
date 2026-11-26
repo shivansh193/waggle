@@ -26,6 +26,8 @@ import {
   flashGesture,
   renderTiltCanvas,
   renderGyroPathCanvas,
+  renderPromptCanvas,
+  renderShakeCanvas,
 } from './ui.js'
 import { relayUrl } from '../env.js'
 import type { PlayerColor } from '@waggle/kit'
@@ -47,9 +49,11 @@ const recorder = new TraceRecorder()
 let socket: WebSocket | null = null
 let playerName = 'Ghost'
 let playerColor: PlayerColor = '#9b59b6'
+let selfId = ''
 let frameBuffer: SensorFrame[] = []
 let gyroBuffer: SensorFrame[] = []
 let currentGame = 'lobby'
+let currentGameData: Record<string, unknown> = {}
 
 // ── Setup screen ──────────────────────────────────────────────────────────────
 
@@ -124,8 +128,11 @@ function connect(): void {
 
 function handleMsg(msg: RelayMsg): void {
   switch (msg.type) {
+    case 'welcome':
+      selfId = msg.selfId
+      break
+
     case 'ping':
-      // Respond immediately — host measures RTT
       socket?.send(JSON.stringify({ type: 'pong', pingId: msg.pingId, clientT: msg.sentAt }))
       break
 
@@ -134,10 +141,14 @@ function handleMsg(msg: RelayMsg): void {
       flashGesture(msg.gesture, playerColor)
       break
 
-    case 'game_state':
-      currentGame = (msg as unknown as { state: { game: string } }).state.game ?? 'lobby'
-      if (currentGame !== 'hex_duel') gyroBuffer = []
+    case 'game_state': {
+      const state = msg.state as unknown as { game: string; data: Record<string, unknown> }
+      const prevGame = currentGame
+      currentGame = state.game ?? 'lobby'
+      currentGameData = state.data ?? {}
+      if (prevGame === 'hex_duel' && currentGame !== 'hex_duel') gyroBuffer = []
       break
+    }
   }
 }
 
@@ -165,6 +176,16 @@ function startSensors(): void {
     // Switch canvas mode based on current game
     if (currentGame === 'hex_duel') {
       renderGyroPathCanvas(gyroBuffer)
+    } else if (currentGame === 'cauldron_chaos') {
+      const phase = currentGameData.phase as string | undefined
+      const prompt = currentGameData.prompt as string | undefined
+      renderPromptCanvas(phase === 'prompt' ? prompt ?? null : null)
+    } else if (currentGame === 'phantom_freq') {
+      const target = (currentGameData.target as number) ?? 0
+      const counts = currentGameData.shakeCounts as Record<string, number> | undefined
+      const myCount = counts?.[selfId] ?? 0
+      const phase = currentGameData.phase as string | undefined
+      renderShakeCanvas(target, myCount, phase ?? 'countdown')
     } else {
       const tilt = getTilt(frameBuffer)
       renderTiltCanvas(tilt.pitch, tilt.roll)

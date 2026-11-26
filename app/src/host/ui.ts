@@ -81,6 +81,39 @@ export function showLobby(visible: boolean): void {
   el.style.display = visible ? '' : 'none'
 }
 
+export function showGamePicker(visible: boolean): void {
+  const el = document.getElementById('game-picker')!
+  el.style.display = visible ? 'flex' : 'none'
+}
+
+export function showReturnBtn(visible: boolean): void {
+  const el = document.getElementById('return-btn')!
+  el.style.display = visible ? '' : 'none'
+}
+
+export function renderGameCards(
+  games: Array<{ key: string; name: string; emoji: string; players: string; tag: string; tagClass: string; desc: string }>,
+  onSelect: (key: string) => void,
+): void {
+  const grid = document.getElementById('game-cards-grid')!
+  grid.innerHTML = ''
+  for (const g of games) {
+    const card = document.createElement('div')
+    card.className = 'game-card'
+    card.innerHTML = `
+      <div class="game-card-emoji">${g.emoji}</div>
+      <div class="game-card-name">${escHtml(g.name)}</div>
+      <div class="game-card-tags">
+        <span class="game-tag ${g.tagClass}">${escHtml(g.tag)}</span>
+        <span class="game-tag">${escHtml(g.players)}</span>
+      </div>
+      <div class="game-card-desc">${escHtml(g.desc)}</div>
+    `
+    card.addEventListener('click', () => onSelect(g.key))
+    grid.appendChild(card)
+  }
+}
+
 function escHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }

@@ -255,3 +255,118 @@ export function renderGyroPathCanvas(frames: SensorFrame[]): void {
   ctx.fill()
   ctx.shadowBlur = 0
 }
+
+/** Big prompt display for Cauldron Chaos (null = show waiting state). */
+export function renderPromptCanvas(prompt: string | null): void {
+  const canvas = document.getElementById('motion-canvas') as HTMLCanvasElement
+  if (!canvas) return
+
+  const dpr = devicePixelRatio || 1
+  if (canvas.width !== canvas.clientWidth * dpr) {
+    canvas.width = canvas.clientWidth * dpr
+    canvas.height = canvas.clientHeight * dpr
+  }
+
+  const ctx = canvas.getContext('2d')!
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const W = canvas.clientWidth
+  const H = canvas.clientHeight
+  const cx = W / 2
+  const cy = H / 2
+
+  ctx.fillStyle = '#07071a'
+  ctx.fillRect(0, 0, W, H)
+
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W, H) * 0.65)
+  if (prompt) {
+    const color = prompt === 'shake' ? '#f97316' : prompt === 'flick' ? '#7c3aed' : '#06b6d4'
+    bg.addColorStop(0, `${color}22`)
+    bg.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = bg
+    ctx.fillRect(0, 0, W, H)
+
+    ctx.fillStyle = color
+    ctx.shadowBlur = 40
+    ctx.shadowColor = color
+    ctx.font = '900 3.2rem "Space Grotesk", sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    const label = prompt === 'shake' ? '📳 SHAKE!' : prompt === 'flick' ? '👋 FLICK!' : '🌀 TWIST!'
+    ctx.fillText(label, cx, cy - 10)
+    ctx.shadowBlur = 0
+    ctx.fillStyle = `${color}88`
+    ctx.font = '500 .85rem Inter, sans-serif'
+    ctx.fillText('Do it now!', cx, cy + 42)
+  } else {
+    bg.addColorStop(0, 'rgba(124,58,237,0.06)')
+    bg.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = bg
+    ctx.fillRect(0, 0, W, H)
+
+    ctx.fillStyle = 'rgba(255,255,255,0.18)'
+    ctx.font = '600 1rem Inter, sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('🧪 Waiting for prompt…', cx, cy)
+  }
+}
+
+/** Shake count display for Phantom Frequency. */
+export function renderShakeCanvas(target: number, myCount: number, phase: string): void {
+  const canvas = document.getElementById('motion-canvas') as HTMLCanvasElement
+  if (!canvas) return
+
+  const dpr = devicePixelRatio || 1
+  if (canvas.width !== canvas.clientWidth * dpr) {
+    canvas.width = canvas.clientWidth * dpr
+    canvas.height = canvas.clientHeight * dpr
+  }
+
+  const ctx = canvas.getContext('2d')!
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const W = canvas.clientWidth
+  const H = canvas.clientHeight
+  const cx = W / 2
+  const cy = H / 2
+
+  ctx.fillStyle = '#07071a'
+  ctx.fillRect(0, 0, W, H)
+
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W, H) * 0.6)
+  bg.addColorStop(0, 'rgba(168,85,247,0.1)')
+  bg.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = bg
+  ctx.fillRect(0, 0, W, H)
+
+  if (phase === 'countdown') {
+    ctx.fillStyle = '#a855f7'
+    ctx.font = '900 1.1rem "Space Grotesk", sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(`TARGET: ${target} shakes`, cx, cy - 20)
+    ctx.fillStyle = 'rgba(255,255,255,0.3)'
+    ctx.font = '500 .82rem Inter, sans-serif'
+    ctx.fillText('Get ready…', cx, cy + 20)
+  } else if (phase === 'playing') {
+    ctx.fillStyle = '#ede9fe'
+    ctx.font = '900 5rem "Space Grotesk", sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.shadowBlur = myCount >= target ? 20 : 0
+    ctx.shadowColor = myCount >= target ? '#f97316' : '#7c3aed'
+    ctx.fillText(String(myCount), cx, cy - 10)
+    ctx.shadowBlur = 0
+    ctx.fillStyle = 'rgba(255,255,255,0.3)'
+    ctx.font = '600 .85rem Inter, sans-serif'
+    ctx.fillText(`/ ${target}`, cx, cy + 46)
+  } else {
+    ctx.fillStyle = '#a855f7'
+    ctx.font = '700 1.1rem "Space Grotesk", sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(`You shook ${myCount}×`, cx, cy - 12)
+    ctx.fillStyle = 'rgba(255,255,255,0.28)'
+    ctx.font = '500 .8rem Inter, sans-serif'
+    ctx.fillText(`target was ${target}`, cx, cy + 20)
+  }
+}
