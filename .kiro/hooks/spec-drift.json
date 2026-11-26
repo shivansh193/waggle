@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Check game implementation against its spec",
+      "trigger": "PostFileSave",
+      "matcher": "app/src/host/games/(seance|hexDuel)\\.ts$",
+      "action": {
+        "type": "agent",
+        "prompt": "A game implementation file was just saved. Identify which game it is (seance.ts → .kiro/specs/seance.md, hexDuel.ts → .kiro/specs/hex-duel.md). Read the spec file and extract every acceptance criterion and mechanic requirement. Then read the implementation file and check each requirement: does the code implement it? List any requirement that is missing or implemented differently from the spec, with the specific line or function involved. If all requirements are met, respond with a single line: 'All spec requirements met.' Keep the full response under 15 lines."
+      }
+    }
+  ]
+}

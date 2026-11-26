@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Verify controller code meets accessibility rules",
+      "trigger": "PostFileSave",
+      "matcher": "app/src/controller/.*\\.ts$",
+      "action": {
+        "type": "agent",
+        "prompt": "A controller file was just saved. Check it against these two accessibility rules from .kiro/steering/rules.md: (1) SEATED MODE — the controller must work without standing or large physical movements; flag any accelerometer threshold that would fail when the user is seated; (2) LEFT-HANDED SUPPORT — axis mappings must not hard-code a right-hand assumption; flag any place where a directional tilt is mapped to an action without considering mirroring. If both rules are satisfied, respond with a single line: 'Accessibility rules satisfied.' Otherwise list each violation with the file, line number, and what to fix."
+      }
+    }
+  ]
+}
