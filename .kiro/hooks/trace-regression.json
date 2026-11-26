@@ -1,0 +1,23 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Gesture replay on detector change",
+      "trigger": "PostFileSave",
+      "matcher": "packages/kit/src/gestures\\.ts$",
+      "action": {
+        "type": "command",
+        "command": "pnpm --filter tests test 2>&1"
+      }
+    },
+    {
+      "name": "Gesture replay on new fixture",
+      "trigger": "PostFileSave",
+      "matcher": "fixtures/.*\\.json$",
+      "action": {
+        "type": "command",
+        "command": "pnpm --filter tests test 2>&1"
+      }
+    }
+  ]
+}

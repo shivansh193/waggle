@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Update gesture checklist in README when a spec changes",
+      "trigger": "PostFileSave",
+      "matcher": "\\.kiro/specs/.*\\.md$",
+      "action": {
+        "type": "agent",
+        "prompt": "A game or kit spec changed. Update the gesture checklist section in README.md to reflect the current list of gestures required by all specs. The checklist should show each gesture name, which games use it, and whether it has fixture traces. Read the specs and fixtures/ directory to build the list."
+      }
+    }
+  ]
+}

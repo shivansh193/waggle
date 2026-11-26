@@ -1,0 +1,18 @@
+{
+  "name": "waggle",
+  "private": true,
+  "version": "0.1.0",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "workerd"]
+  },
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter relay dev\" \"pnpm --filter app dev\"",
+    "build": "pnpm --filter @waggle/kit build && pnpm --filter app build",
+    "test": "pnpm --filter tests test",
+    "lint": "tsc --noEmit -p tsconfig.base.json"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.2"
+  }
+}

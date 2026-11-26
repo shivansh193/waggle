@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waggle — Host</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="host-root">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div id="room-code" class="pulsing">····</div>
+      <div id="join-hint">Scan to join</div>
+      <div id="qr-wrap">
+        <canvas id="qr-canvas"></canvas>
+      </div>
+      <div id="player-list"></div>
+      <button id="start-btn" disabled>Waiting for players…</button>
+    </aside>
+
+    <!-- Main area -->
+    <main id="game-area">
+      <canvas id="game-canvas"></canvas>
+
+      <!-- Lobby overlay (shown until a game starts) -->
+      <div id="lobby-overlay">
+        <div id="lobby-title">WAGGLE</div>
+        <div id="lobby-sub">Scan the QR with your phone</div>
+      </div>
+
+      <!-- Debug overlay -->
+      <div id="debug-overlay">
+        <div>Relay: <span id="dbg-relay" class="warn">connecting…</span></div>
+        <div>Players: <span id="dbg-players">0</span></div>
+        <div>p50: <span id="dbg-p50">—</span> ms</div>
+        <div>p95: <span id="dbg-p95">—</span> ms</div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/src/host/index.ts"></script>
+</body>
+</html>

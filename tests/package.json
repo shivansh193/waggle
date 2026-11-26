@@ -1,0 +1,19 @@
+{
+  "name": "tests",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@waggle/kit": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.0"
+  }
+}

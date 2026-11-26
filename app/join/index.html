@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Waggle — Controller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="ctrl-root">
+    <!-- Setup screen -->
+    <div id="setup-screen">
+      <h1>WAGGLE</h1>
+      <input id="name-input" type="text" placeholder="Your name" maxlength="16" autocomplete="off" />
+      <div id="color-picker"></div>
+      <button id="join-btn">Join Game</button>
+    </div>
+
+    <!-- Active controller screen (hidden until joined) -->
+    <div id="active-screen" class="hidden">
+      <div id="player-banner">
+        <div id="banner-dot"></div>
+        <span id="banner-name"></span>
+        <span id="banner-room"></span>
+      </div>
+
+      <canvas id="motion-canvas"></canvas>
+
+      <!-- Flashes gesture name on-screen -->
+      <div id="gesture-flash"></div>
+
+      <!-- iOS permission gate -->
+      <div id="permission-overlay" class="hidden">
+        <p>This game needs your phone's motion sensors.</p>
+        <button id="grant-btn">Enable Motion Controls</button>
+        <p style="font-size:.8rem">iOS only — tap once, then enjoy.</p>
+      </div>
+
+      <div id="conn-status" class="connecting">Connecting…</div>
+    </div>
+  </div>
+  <script type="module" src="/src/controller/index.ts"></script>
+</body>
+</html>

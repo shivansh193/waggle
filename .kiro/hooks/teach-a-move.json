@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Offer to generate detector when new trace folder appears",
+      "trigger": "PostFileSave",
+      "matcher": "fixtures/([a-z_]+)_[123]\\.json$",
+      "action": {
+        "type": "agent",
+        "prompt": "A new gesture trace was saved to fixtures/. If there are now 3 or more traces for the same gesture name (the part before the underscore and number), generate a detector function in packages/kit/src/gestures.ts that matches that gesture, and add a test to tests/gestures.test.ts that uses those traces as fixtures. Follow the existing detector patterns. Run the tests when done."
+      }
+    }
+  ]
+}
